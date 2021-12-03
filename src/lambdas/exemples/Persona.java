@@ -3,6 +3,9 @@ package lambdas.exemples;
 import java.time.LocalDate;
 import java.time.Period;
 
+enum Genere {
+    HOME,DONA
+}
 public class Persona implements Comparable<Persona> {
     @Override
     public int compareTo(Persona o) {
@@ -11,9 +14,7 @@ public class Persona implements Comparable<Persona> {
         else return 0;
     }
 
-    public enum Genere {
-        HOME,DONA
-    }
+
 
     private String nom;
     private Genere genere;

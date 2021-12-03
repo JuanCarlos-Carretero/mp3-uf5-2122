@@ -11,16 +11,19 @@ public class ExerciciL {
 
     public static void main(String[] args) {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("d/MM/yyy");
-        Persona p1 = new Persona("Arya", Persona.Genere.DONA, LocalDate.parse("25/12/2002",format) );
-        Persona p2 = new Persona("Tyrion", Persona.Genere.HOME, LocalDate.parse("12/10/1980",format));
-        Persona p3 = new Persona("Cersei", Persona.Genere.DONA, LocalDate.parse("10/01/1984",format));
-        Persona p4 = new Persona("Eddard", Persona.Genere.HOME, LocalDate.parse("24/04/1974",format));
-        Persona p5 = new Persona("Sansa", Persona.Genere.DONA, LocalDate.parse("24/04/1992",format));
-        Persona p6 = new Persona("Jaime", Persona.Genere.HOME, LocalDate.parse("24/04/1979",format));
-        Persona p7 = new Persona("Khal", Persona.Genere.HOME, LocalDate.parse("10/08/1979",format));
-        Persona p8 = new Persona("Daenerys", Persona.Genere.DONA, LocalDate.parse("12/11/1992",format));
+        Persona p1 = new Persona("Arya", Genere.DONA, LocalDate.parse("25/12/2002",format) );
+        Persona p2 = new Persona("Tyrion", Genere.HOME, LocalDate.parse("12/10/1980",format));
+        Persona p3 = new Persona("Cersei", Genere.DONA, LocalDate.parse("10/01/1984",format));
+        Persona p4 = new Persona("Eddard", Genere.HOME, LocalDate.parse("24/04/1974",format));
+        Persona p5 = new Persona("Sansa", Genere.DONA, LocalDate.parse("24/04/1992",format));
+        Persona p6 = new Persona("Jaime", Genere.HOME, LocalDate.parse("24/04/1979",format));
+        Persona p7 = new Persona("Khal", Genere.HOME, LocalDate.parse("10/08/1979",format));
+        Persona p8 = new Persona("Daenerys", Genere.DONA, LocalDate.parse("12/11/1992",format));
+        Persona p9 = new Persona("Davos", Genere.HOME, LocalDate.parse("12/11/1965",format));
+        Persona p10 = new Persona("Jon Neu", Genere.HOME, LocalDate.parse("12/11/1986",format));
+        Persona p11 = new Persona("Brienne", Genere.DONA, LocalDate.parse("12/11/1989",format));
 
-        Persona[] lpers = {p1,p2,p3,p4,p5,p6,p7,p8};
+        Persona[] lpers = {p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11};
         List<Persona> llista_persones;
         llista_persones = new ArrayList<>(Arrays.asList(lpers));
         Map<Integer,Integer> mapPersones = new HashMap<>();
@@ -42,7 +45,7 @@ public class ExerciciL {
         /*for(Persona p: llista_persones) {
             System.out.println(p);
         }*/
-        .forEach(System.out::println);
+        .forEach(persona -> System.out.println(persona));
 
 
         // 3 - Canvia a classe anònima
@@ -55,25 +58,17 @@ public class ExerciciL {
         /*for(Persona p: llista_persones) {
             System.out.println(p);
         };*/
-                    .forEach(new Consumer<Persona>() {
-                        @Override
-                        public void accept(Persona p) {
-                            System.out.println(p);
-                        }
-                    });
-
+                    .forEach(System.out::println);
 
         // 5 - Omplir map. Canviar per un forEach amb lambda
         System.out.println("\n5-6");
         /*for(Persona per : llista_persones) {
             mapPersones.put(per.getAge(),1);
         }*/
-
-        Stream<Persona> stream3 = Arrays.stream(lpers);
-        stream3.map(Persona::getAge).distinct().collect(Collectors.toList())
+       /* llista_persones.forEach((k) -> mapPersones.put(k.getAge(),1));*/
 
         // 6 - Canvia per un recorregut forEach amb lambda
-                .forEach((o1) -> System.out.println(o1 + " : " + 1));
+        mapPersones.forEach((k,v) -> System.out.println(k + " : " + v));
 
         /*for(Map.Entry entry : mapPersones.entrySet()) {
             System.out.println(entry.getKey() + " : " + entry.getValue());
@@ -99,14 +94,29 @@ public class ExerciciL {
                 44 anys -> 1
                 15 anys -> 1
          */
+        System.out.println("\n7");
+
+        llista_persones.forEach((p) -> {
+            mapPersones.computeIfPresent(p.getAge(), (k,v) -> v+1);
+            mapPersones.putIfAbsent(p.getAge(),1);
+        });
+        mapPersones.forEach((k,v) -> System.out.println(k + " : " + v));
 
         // 8 - llistat de persones DONA amb lambda (stream)
+        System.out.println("\n8");
+        Stream<Persona> stream8 = Arrays.stream(lpers);
+        stream8.filter((o1) -> o1.getGenere().equals(Genere.DONA))
+                .forEach(System.out::println);
 
         // 9 - Llistat dels dos HOMES més joves (stream)
+        System.out.println("\n9");
+        Stream<Persona> stream9 = Arrays.stream(lpers);
+        stream9.filter((o1) -> o1.getGenere().equals(Genere.HOME))
+                .sorted((o1, o2) -> Integer.compare(o1.getAge(), o2.getAge()))
+                .limit(2)
+                .forEach(System.out::println);
 
         // 10- Esborrar (no filtrar o imprimir) del llistat les persones entre 30 i 40 anys (amb lambda)
 
     }
-
-
 }
