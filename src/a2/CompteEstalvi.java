@@ -1,12 +1,14 @@
 package a2;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class CompteEstalvi {
     private String numCompte;
     private double saldo;
     //Usuaris co-propietaris del compte
-    private List<Client> llista_usuaris;
+    private List<Client> llista_usuaris = new ArrayList<>();
 
     public CompteEstalvi(String numCompte) {
         this.numCompte = numCompte;
@@ -30,9 +32,13 @@ public class CompteEstalvi {
      @return quantitat d'usuaris que té el compte
      @throws //BankAccountException
      **/
-    public int removeUser(String dni) {
-        llista_usuaris.removeIf(u -> dni.equals(u.getDNI()));
-        return llista_usuaris.size();
+    public int removeUser(String dni) throws BankAccountException{
+        if (llista_usuaris.size() == 1){
+            throw new BankAccountException(BankAccountException.ACCOUNT_1_USER);
+        } else{
+            llista_usuaris.removeIf(u -> dni.equals(u.getDNI()));
+        }
+        return 0;
     }
 
     /**
@@ -48,8 +54,13 @@ public class CompteEstalvi {
      * @param m
      * @throws //BankAccountException
      */
-    public void treure(double m) {
-        saldo -= m;
+    public void treure(double m) throws BankAccountException{
+        if(saldo - m < 0){
+            throw new BankAccountException(BankAccountException.ACCOUNT_OVERDRAFT);
+        } else{
+            saldo -= m;
+        }
+
     }
 
     public String getNumCompte() {

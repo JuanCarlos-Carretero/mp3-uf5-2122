@@ -1,5 +1,8 @@
 package a2;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Client {
     private String Nom;
     private String Cognoms;
@@ -9,6 +12,16 @@ public class Client {
         Nom = nom;
         Cognoms = cognoms;
         this.DNI = DNI;
+    }
+
+    public boolean validarDNI(String dni)  throws ClientAccountException{
+        Pattern patron = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
+        Matcher mat = patron.matcher(dni);
+        while(!mat.matches()){
+            throw new ClientAccountException(ClientAccountException.WRONG_DNI);
+        }
+        System.out.println("El DNI " + dni + " es válido.");
+        return true;
     }
 
     public String getNom() {
