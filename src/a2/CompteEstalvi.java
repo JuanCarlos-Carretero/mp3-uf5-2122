@@ -36,6 +36,12 @@ public class CompteEstalvi {
         if (llista_usuaris.size() == 1){
             throw new BankAccountException(BankAccountException.ACCOUNT_1_USER);
         } else{
+            if (llista_usuaris.size() == 2 || llista_usuaris.size() == 3){
+                for (int i = 0; i < llista_usuaris.size(); i++) {
+                    llista_usuaris.remove(llista_usuaris.get(i));
+                    break;
+                }
+            }
             llista_usuaris.removeIf(u -> dni.equals(u.getDNI()));
         }
         return 0;
