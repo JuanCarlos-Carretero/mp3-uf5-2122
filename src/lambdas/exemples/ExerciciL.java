@@ -1,5 +1,6 @@
 package lambdas.exemples;
 
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -116,7 +117,32 @@ public class ExerciciL {
                 .limit(2)
                 .forEach(System.out::println);
 
-        // 10- Esborrar (no filtrar o imprimir) del llistat les persones entre 30 i 40 anys (amb lambda)
+        // 10 - Esborrar (no filtrar o imprimir) del llistat les persones entre 30 i 40 anys (amb lambda)
+        System.out.println("\n10");
+        llista_persones.removeIf(p -> p.getAge()> 30 && p.getAge()<40);
+        llista_persones.forEach(System.out::println);
+
+        // 11 - Persones que tinguin una 'a' al seu nom
+        System.out.println("\n11 Amb una 'A'" );
+        Stream<Persona> stream11 = Arrays.stream(lpers);
+        stream11.filter((o1) -> o1.getNom().contains("a"))
+                .forEach(System.out::println);
+
+        // 12 - Llistat de les dates de naixament + dos dies
+        System.out.println("\n12 Dates amb dos dies mès");
+        Stream<Persona> stream12 = Arrays.stream(lpers);
+        stream12.map(p-> p.getDataNaixament()
+                        .plusDays(2))
+                .forEach(System.out::println);
+
+        //13 - Rejovenir dos anys a totes les persones
+        System.out.println("\n13 Rejovenir dos anys a totes les persones");
+        Stream<Persona> stream13 = Arrays.stream(lpers);
+        stream13.map(p-> {
+            p.setDataNaixament(p.getDataNaixament().plusYears(2));
+            return p;
+        }).forEach(System.out::println);
+
 
     }
 }
